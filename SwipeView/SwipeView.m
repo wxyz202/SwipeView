@@ -51,7 +51,6 @@
 
 @implementation NSObject (SwipeView)
 
-- (CGSize)swipeViewItemSize:(__unused SwipeView *)swipeView { return CGSizeZero; }
 - (void)swipeViewDidScroll:(__unused SwipeView *)swipeView {}
 - (void)swipeViewCurrentItemIndexDidChange:(__unused SwipeView *)swipeView {}
 - (void)swipeViewWillBeginDragging:(__unused SwipeView *)swipeView {}
@@ -907,7 +906,11 @@
     _numberOfItems = [_dataSource numberOfItemsInSwipeView:self];
     
     //get item size
-    CGSize size = [_delegate swipeViewItemSize:self];
+    CGSize size = CGSizeZero;
+    if ([_delegate respondsToSelector:@selector(swipeViewItemSize:)])
+    {
+        size = [_delegate swipeViewItemSize:self];
+    }
     if (!CGSizeEqualToSize(size, CGSizeZero))
     {
         _itemSize = size;
